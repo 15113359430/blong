@@ -45,7 +45,7 @@ $('#form').Validform({
     ajaxPost:true,
     callback:function(res){
         if(res.status == 'success'){
-            location.href="/admin/index";
+            location.href="{{url('admin/index')}}";
         }else{
             layer.msg(res.msg,{icon:2});
         }

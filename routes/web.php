@@ -24,6 +24,8 @@ Route::get('admin/index','Admin\IndexController@index')->middleware('login');
 
 //网站设置
 Route::get('admin/system','Admin\SystemController@index');
+Route::get('admin/system/edit','Admin\SystemController@edit');
+Route::post('admin/system/update','Admin\SystemController@update');
 
 //banner
 Route::resource('admin/image','Admin\ImageController');

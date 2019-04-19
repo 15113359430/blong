@@ -22,14 +22,16 @@
   <h2><span class="icon-user"></span>基本设置</h2>
   <ul style="display:block">
     <li><a href="{{url('admin/system')}}" target="right"><span class="icon-caret-right"></span>网站设置</a></li>
-    <li><a href="{{url('admin/image')}}" target="right"><span class="icon-caret-right"></span>首页轮播</a></li>   
-    <li><a href="{{url('admin/comment')}}" target="right"><span class="icon-caret-right"></span>留言管理</a></li>     
-
-  </ul>   
+  </ul>
+  <h2><span class="icon-pencil-square-o"></span>首页轮播</h2>
+  <ul>
+ <li><a href="{{url('admin/image')}}" target="right"><span class="icon-caret-right"></span>首页轮播</a></li>    
+  </ul>    
   <h2><span class="icon-pencil-square-o"></span>栏目管理</h2>
   <ul>
     <li><a href="{{url('admin/article')}}" target="right"><span class="icon-caret-right"></span>内容管理</a></li>
     <li><a href="{{url('admin/article/create')}}" target="right"><span class="icon-caret-right"></span>添加内容</a></li>
+    <li><a href="{{url('admin/comment')}}" target="right"><span class="icon-caret-right"></span>留言管理</a></li>     
    
   </ul>  
   <h2><span class="icon-pencil-square-o"></span>用户管理</h2>
@@ -41,7 +43,7 @@
   <ul>
      <li><a href="{{url('admin/cat')}}" target="right"><span class="icon-caret-right"></span>分类列表</a></li>
     <li><a href="{{url('admin/cat/create')}}" target="right"><span class="icon-caret-right"></span>分类添加</a></li>
-  </ul>    
+  </ul> 
 </div>
 <script type="text/javascript">
 $(function(){
