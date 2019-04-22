@@ -1,5 +1,5 @@
 @extends('admin.layout.layout')
-@section('center')
+@section('content')
 <body>
 <div class="bg"></div>
 <div class="container">
@@ -8,26 +8,26 @@
             <div style="height:150px;"></div>
             <div class="media media-y margin-big-bottom">           
             </div>         
-            <form id="form" action="{{url('admin/login')}}" method="post">
-            {{csrf_field()}}
+            <form id="form" action="{{url('admin/toLogin')}}" method="post">
+                {{csrf_field()}}
             <div class="panel loginbox">
                 <div class="text-center margin-big padding-big-top"><h1>后台管理中心</h1></div>
                 <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
                     <div class="form-group">
                         <div class="field field-icon-right">
-                            <input type="text" class="input input-big" datatype="s4-10" name="name" placeholder="登录账号" data-validate="required:请填写账号" />
-                            <span class="icon icon-user margin-small"></span>
+                            <input type="text" class="input input-big" name="admin_name" placeholder="登录账号" datatype="s4-10" />
+           
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="field field-icon-right">
-                            <input type="password" class="input input-big" datatype="s6-8" name="password" placeholder="登录密码" data-validate="required:请填写密码" />
-                            <span class="icon icon-key margin-small"></span>
+                            <input type="password" class="input input-big" name="admin_pass" placeholder="登录密码" datatype="s4-8" />
+     
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="field">
-                            <input type="text" class="input input-big" datatype='s4-4' name="code" placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码" />
+                            <input type="text" class="input input-big" datatype="s4-4" name="code" placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码" />
                            <img src="{{captcha_src('flat')}}" alt="" width="100" height="32" class="passcode" style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">  
                                                    
                         </div>
@@ -39,18 +39,21 @@
         </div>
     </div>
 </div>
+
+</body>
+
 <script>
 $('#form').Validform({
-    tiptype:4,
-    ajaxPost:true,
-    callback:function(res){
-        if(res.status == 'success'){
-            location.href="{{url('admin/index')}}";
-        }else{
-            layer.msg(res.msg,{icon:2});
+        tiptype:4,
+        ajaxPost:true,
+        callback:function(res){
+            if(res.status=='success'){
+               location.href="{{url('admin/index')}}";
+            }else{
+                 layer.msg(res.msg,{icon:2});
+            }
         }
-    }
-})
+
+});
 </script>
-</body>
 @endsection

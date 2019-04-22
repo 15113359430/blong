@@ -10,40 +10,98 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function(){
-	return view('welcome');
-});
-//后台登录
-Route::get('admin/login', 'Admin\LoginController@index');
-//后台验证
-Route::post('admin/login', 'Admin\LoginController@login');
-//退出登录
+//后台登陆页面
+Route::get('admin/login','Admin\LoginController@index');
+Route::post('admin/toLogin','Admin\LoginController@login');
 Route::get('admin/logout','Admin\LoginController@logout');
 //后台首页
+
 Route::get('admin/index','Admin\IndexController@index')->middleware('login');
 
-//网站设置
-Route::get('admin/system','Admin\SystemController@index');
-Route::get('admin/system/edit','Admin\SystemController@edit');
-Route::post('admin/system/update','Admin\SystemController@update');
 
-//banner
-Route::resource('admin/image','Admin\ImageController');
+//网站设置
+
+Route::get('admin/system','Admin\SystemController@index')->middleware('login');
+
+Route::get('admin/system/edit','Admin\SystemController@edit')->middleware('login');
+
+Route::post('admin/system/update','Admin\SystemController@update')->middleware('login');
+
+
+//后台幻灯片
+Route::resource('admin/image','Admin\ImageController')->middleware('login');
+
+Route::post('admin/upload','Admin\ImageController@upload')->middleware('login');
 
 //留言管理
-Route::get('admin/comment','Admin\CommentController@index');
+
+Route::get('admin/comment','Admin\CommentController@index')->middleware('login');
 
 //文章管理
-Route::resource('admin/article','Admin\AriticeController');
 
-//分类管理
-Route::resource('admin/cat','Admin\CatController');
+Route::resource('admin/article','Admin\ArticleController')->middleware('login');
+Route::post('admin/article/upload','Admin\ArticleController@upload')->middleware('login');
+
+//分类管理 category
+
+Route::resource('admin/cat','Admin\CatController')->middleware('login');
 
 //管理员密码修改
-Route::match(['get','post'],'admin/pass','Admin\UserController@pass');
+
+Route::match(['get','post'],'admin/pass','Admin\UserController@pass')->middleware('login');
 
 //用户列表
-Route::get('admin/user','Admin\UserController@index');
 
-//通过ajax匹配原密码
-Route::post('admin/charkpass','Admin\LoginController@charkpass');
+Route::get('admin/user','Admin\UserController@index')->middleware('login');
+Route::post('admin/checkPass','Admin\LoginController@checkPass');
+
+
+
+//后台幻灯片
+Route::resource('admin/link','Admin\LinkController')->middleware('login');
+
+
+//前台首页
+
+Route::get('/','Home\IndexController@index');
+
+//文章
+
+//Route::get('article/list','Home\ArticleController@index');
+Route::get('article/detail/{id}','Home\ArticleController@detail')->where('id','\d+');
+
+//用户的登陆以及注册
+
+Route::match(['get','post'],'login','Home\UserController@login');
+Route::match(['get','post'],'register','Home\UserController@register');
+
+Route::post('check','Home\UserController@checkName');
+
+//用户退出
+
+Route::get('logout','Home\UserController@logout');
+
+//文章分类
+
+Route::get('cat/{id}','Home\CatController@index')->where('id','\d+');
+
+//文章点赞
+
+Route::get('article/diggit/{id}','Home\ArticleController@diggit');
+
+//文章评论
+
+Route::post('article/comment','Home\ArticleController@comment');
+
+//冻结用户
+
+Route::delete('admin/freeze/{id}','Admin\UserController@freeze')->middleware('login');
+
+//删除评论
+
+Route::delete('admin/delCom/{id}','Admin\CommentController@delCom')->middleware('login');
+
+//文章搜索
+
+Route::post('article/search','Home\ArticleController@search');
+

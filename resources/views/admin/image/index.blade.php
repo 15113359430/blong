@@ -1,124 +1,87 @@
 @extends('admin.layout.layout')
-@section('center')
+@section('content')
 <body>
 <div class="panel admin-panel">
   <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong></div>
   <div class="padding border-bottom">  
-  <button type="button" class="button border-yellow" onclick="window.location.href='#add'"><span class="icon-plus-square-o"></span> 添加内容</button>
+  <a type="button" class="button border-yellow" href="{{url('admin/image/create')}}"><span class="icon-plus-square-o"></span> 添加内容</a>
   </div>
+
+
+@if(!empty($images))
+
   <table class="table table-hover text-center">
     <tr>
       <th width="10%">ID</th>
       <th width="20%">图片</th>
       <th width="15%">名称</th>
+       <th width="15%">url</th>
       <th width="20%">描述</th>
       <th width="10%">排序</th>
-      <th width="15%">操作</th>
+      <th width="30%">操作</th>
     </tr>
    
+
+   @foreach($images as $image)
     <tr>
-      <td>1</td>     
-      <td><img src="{{asset('admin/images/11.jpg')}}" alt="" width="120" height="50" /></td>     
-      <td>首页焦点图</td>
-      <td>描述文字....</td>
-      <td>1</td>
+      <td>{{$loop->iteration}}</td>     
+      <td><img src="/{{$image['img_url']}}" alt="" width="120" height="50" /></td>     
+      <td>{{$image['title']}}</td>
+      <td>{{$image['url']}}</td>
+      <td>{{$image['desc']}}</td>
+      <td>{{$image['sort']}}</td>
       <td><div class="button-group">
-      <a class="button border-main" href="#add"><span class="icon-edit"></span> 修改</a>
-      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+      <a class="button border-main" href="{{url('admin/image/'.$image['id'].'/edit')}}"><span class="icon-edit"></span> 修改</a>
+      <a class="button border-red" href="javascript:void(0)" onclick="delImage({{$image['id']}})"><span class="icon-trash-o"></span> 删除</a>
       </div></td>
     </tr>
-    <tr>
-      <td>2</td>     
-      <td><img src="{{asset('admin/images/11.jpg')}}" alt="" width="120" height="50" /></td>     
-      <td>首页焦点图</td>
-      <td>描述文字....</td>
-      <td>1</td>
-      <td><div class="button-group">
-      <a class="button border-main" href="#add"><span class="icon-edit"></span> 修改</a>
-      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
-      </div></td>
-    </tr>
-    <tr>
-      <td>3</td>     
-      <td><img src="{{asset('admin/images/11.jpg')}}" alt="" width="120" height="50" /></td>     
-      <td>首页焦点图</td>
-      <td>描述文字....</td>
-      <td>1</td>
-      <td><div class="button-group">
-      <a class="button border-main" href="#add"><span class="icon-edit"></span> 修改</a>
-      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
-      </div></td>
-    </tr>
-    
+ @endforeach
+
+ @else
+
+ 你好没有幻灯片 请先去添加
+
+ @endif
+
+
   </table>
+
+
+
+
 </div>
 <script type="text/javascript">
-function del(id,mid){
-	if(confirm("您确定要删除吗?")){
-	
-	}
+
+
+function delImage(id){
+
+  var _token = "{{csrf_token()}}";
+
+
+  layer.confirm('你确定要删除这个幻灯片吗??',function(){
+      $.ajax({
+          type:'delete',
+          url:'/admin/image/'+id,
+          datatype:'json',
+          data:{_token:_token},
+          success:function(res){
+            if(res.status=='success'){
+               window.parent.location.href="{{url('admin/index')}}";
+            }else{
+                 layer.msg(res.msg,{icon:2});
+            }
+          }
+
+
+      })
+
+
+  })
 }
+
+
+
 </script>
-<div class="panel admin-panel margin-top" id="add">
-  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 增加内容</strong></div>
-  <div class="body-content">
-    <form method="post" class="form-x" action="">    
-      <div class="form-group">
-        <div class="label">
-          <label>标题：</label>
-        </div>
-        <div class="field">
-          <input type="text" class="input w50" value="" name="title" data-validate="required:请输入标题" />
-          <div class="tips"></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="label">
-          <label>URL：</label>
-        </div>
-        <div class="field">
-          <input type="text" class="input w50" name="url" value=""  />
-          <div class="tips"></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="label">
-          <label>图片：</label>
-        </div>
-        <div class="field">
-          <input type="text" id="url1" name="img" class="input tips" style="width:25%; float:left;"  value="" data-toggle="hover" data-place="right" data-image="" />
-          <input type="button" class="button bg-blue margin-left" id="image1" value="+ 浏览上传"  style="float:left;">
-          <div class="tipss">图片尺寸：1920*500</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="label">
-          <label>描述：</label>
-        </div>
-        <div class="field">
-          <textarea type="text" class="input" name="note" style="height:120px;" value=""></textarea>
-          <div class="tips"></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="label">
-          <label>排序：</label>
-        </div>
-        <div class="field">
-          <input type="text" class="input w50" name="sort" value="0"  data-validate="required:,number:排序必须为数字" />
-          <div class="tips"></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="label">
-          <label></label>
-        </div>
-        <div class="field">
-          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+
 </body>
 @endsection
